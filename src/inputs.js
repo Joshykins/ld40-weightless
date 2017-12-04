@@ -19,6 +19,6 @@ window.addEventListener('keyup', function(e) {
 });
 
 window.addEventListener("mousemove", function(event) {
-	mouse.x = event.x;
-	mouse.y = event.y;
+	mouse.x = event.x-adjustX;
+	mouse.y = event.y-adjustY;
 })

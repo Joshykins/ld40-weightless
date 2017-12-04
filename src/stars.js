@@ -1,13 +1,12 @@
 let stars = [];
 let starStuff = {};
 
-
 function createStars() {
   for (var i = 0; i < 180; i++) {
     starStuff.opacity =  Math.random()*1;
     starStuff.radius =  Math.floor(Math.random()*1)+1;
-    starStuff.x = Math.floor(Math.random()*bg.offsetWidth);
-    starStuff.y = Math.floor(Math.random()*bg.offsetHeight);
+    starStuff.x = Math.floor(Math.random()*appWidth);
+    starStuff.y = Math.floor(Math.random()*appHeight);
     stars[i] = new Star(starStuff.x, starStuff.y, starStuff.opacity, 0, 0, starStuff.radius);
     stars[i].draw();
   }
@@ -34,19 +33,19 @@ function Star(x, y, opacity, xV, yV, radius) {
   },
 
   this.update = function(deltaT) {
-    if (this.x > bg.offsetWidth + this.radius) {
+    if (this.x > appWidth + this.radius) {
       this.x = -this.radius;
 
     } else if (this.x < 0 - this.radius) {
-      this.x = bg.offsetWidth + this.radius;
+      this.x = appWidth + this.radius;
     }
 
 
-    if (this.y > bg.offsetHeight + this.radius) {
+    if (this.y > appHeight + this.radius) {
       this.y = -this.radius;
 
     } else if (this.y < 0 - this.radius) {
-      this.y = bg.offsetHeight + this.radius;
+      this.y = appHeight + this.radius;
     }
 
 
@@ -67,7 +66,6 @@ function Star(x, y, opacity, xV, yV, radius) {
       this.opacity -= this.opacityAdjust;
     }
     //Movement
-
     this.x = this.x - (Math.cos(player.spr.rotation)*player.vel)*this.stagnation;
     this.y = this.y - (Math.sin(player.spr.rotation)*player.vel)*this.stagnation;
 

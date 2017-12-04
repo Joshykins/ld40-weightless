@@ -1,19 +1,29 @@
 let asteroidStuff = {};
 let asteroids  = [];
 let asteroidRealCount = 0;
-
+let j = 0;
 
 function asteroidCreator() {
-  let j = 0;
+
   while (asteroidRealCount < asteroidCount) {
     asteroidRealCount++;
-    asteroidStuff.x = Math.floor(Math.random()*bg.offsetWidth);
-    asteroidStuff.y = Math.floor(Math.random()*bg.offsetHeight);
+    let rando = Math.random() >= 0.5
+    if (rando) {
+      asteroidStuff.x = Math.floor(Math.random()*appWidth);
+      asteroidStuff.y = -100;
+    }
+    else {
+      asteroidStuff.x = -100;
+      asteroidStuff.y = Math.floor(Math.random()*appHeight);
+    }
+
     asteroidStuff.xV = (Math.random()*2)-1;
     asteroidStuff.yV = (Math.random()*2)-1;
-    log(asteroidStuff.x);
+
     asteroids[j] = new Asteroid(asteroidStuff.x, asteroidStuff.y, asteroidStuff.xV, asteroidStuff.yV);
     stage.addChild(asteroids[j].asteroid);
+    stage.addChild(asteroids[j].mineralText);
+
     j++;
 
 
@@ -33,33 +43,46 @@ function  Asteroid(x, y, xV, yV, radius) {
   this.y = y,
   this.lockedon = false;
   this.xV = xV,
+  this.kaboomed = false;
+  this.mod = 0;
+  this.textA = 0;
+
   this.yV = yV,
   this.rotation = (Math.random()*.02)-.01,
   this.asteroid.anchor.set(0.5,0.5),
   this.radius = 70,
+  this.mineralText = new PIXI.Text('+1 Mineral',{fontFamily : 'Arial', fontSize: 24, fill : 0x0066ff, align : 'center'});
   this.asteroid.scale.set(.5,.5),
+
   this.draw = function() {
     //Nothing to be redrawn, I think
-    this.asteroid.x = this.x;
-    this.asteroid.y = this.y;
+    this.asteroid.x = this.x+this.mod;
+    this.asteroid.y = this.y+this.mod;
     this.asteroid.rotation += this.rotation;
+
+
+    this.mineralText.x =  this.x - 20;
+    this.mineralText.y = this.y + 20;
+    this.mineralText.alpha = this.textA;
   },
 
   this.update = function(deltaT, i) {
-    if (this.x > bg.offsetWidth + this.radius) {
+    if (this.x > appWidth + this.radius) {
       this.x = -this.radius;
 
     } else if (this.x < 0 - this.radius) {
-      this.x = bg.offsetWidth + this.radius;
+      this.x = appWidth + this.radius;
     }
 
 
-    if (this.y > bg.offsetHeight + this.radius) {
+    if (this.y > appHeight + this.radius) {
       this.y = -this.radius;
 
     } else if (this.y < 0 - this.radius) {
-      this.y = bg.offsetHeight + this.radius;
+      this.y = appHeight + this.radius;
     }
+
+
 
     //Drift
     this.x = this.x + this.xV;
@@ -67,16 +90,35 @@ function  Asteroid(x, y, xV, yV, radius) {
 
 
     //Movement
-    this.x = this.x - (Math.cos(player.spr.rotation)*player.vel);
-    this.y = this.y - (Math.sin(player.spr.rotation)*player.vel);
+    if(!this.kaboomed) {
 
-    //Lockon?
-    if (withinRadius(this.x,this.y, mouse.x,mouse.y,this.radius)) {
-      if (this.lockedon === false) {
-        log(i);
+      this.x = this.x - (Math.cos(player.spr.rotation)*player.vel);
+      this.y = this.y - (Math.sin(player.spr.rotation)*player.vel);
+    }
 
-        this.lockedon = true;
+    //Loop through targets to see if intersect.
+    if(checkForExplosion) {
+      for (var i = 0; i < targets.length; i++) {
+        if(targets[i].shot) {
+          if(withinRadius(targets[i].x,targets[i].y,this.x,this.y,targets[i].explosionradius)) {
+            if (this.kaboomed === false) {
+              this.mod = 500000;
+              this.textA = 1;
+              asteroidRealCount--;
+              player.minerals++;
+            }
+
+            this.kaboomed = true;
+          }
+        }
       }
+    }
+
+    if (this.kaboomed) {
+      this.textA -= .03;
+    }
+    if (this.textA < 0) {
+
     }
 
     this.draw();
