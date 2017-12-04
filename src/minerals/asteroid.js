@@ -1,13 +1,13 @@
 let asteroidStuff = {};
 let asteroids  = [];
 let asteroidRealCount = 0;
-let j = 0;
+let asteroidsSpawned = 0;
 
 function asteroidCreator() {
 
   while (asteroidRealCount < asteroidCount) {
     asteroidRealCount++;
-    let rando = Math.random() >= 0.5
+    let rando = Math.random() >= 0.5;
     if (rando) {
       asteroidStuff.x = Math.floor(Math.random()*appWidth);
       asteroidStuff.y = -100;
@@ -20,11 +20,11 @@ function asteroidCreator() {
     asteroidStuff.xV = (Math.random()*2)-1;
     asteroidStuff.yV = (Math.random()*2)-1;
 
-    asteroids[j] = new Asteroid(asteroidStuff.x, asteroidStuff.y, asteroidStuff.xV, asteroidStuff.yV);
-    stage.addChild(asteroids[j].asteroid);
-    stage.addChild(asteroids[j].mineralText);
+    asteroids[asteroidsSpawned] = new Asteroid(asteroidStuff.x, asteroidStuff.y, asteroidStuff.xV, asteroidStuff.yV);
+    stage.addChild(asteroids[asteroidsSpawned].asteroid);
+    stage.addChild(asteroids[asteroidsSpawned].mineralText);
 
-    j++;
+    asteroidsSpawned++;
 
 
   }

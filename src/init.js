@@ -22,7 +22,7 @@ PIXI.loader
   .add("asteroid", "assets/asteroid.png")
   .add("mineral", "assets/minerals.png")
   .add("lockon", "assets/lockon.png")
-  .add("enemy", "assets/enemy.png")
+  .add("enemy", "assets/shipEvil.png")
   .load(setup);
 
 
