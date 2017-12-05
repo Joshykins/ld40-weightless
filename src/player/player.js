@@ -2,6 +2,7 @@
 let player = {};
 let trail = [];
 player.minerals = 0;
+player.kills = 0;
 
 function createPlayer() {
   player.spr = new PIXI.Sprite(
@@ -10,10 +11,15 @@ function createPlayer() {
   player.spr.x = appWidth/2;
   player.spr.y = appHeight/2;
 
+  player.resetText = new PIXI.Text('Minerals Stolen!',{fontFamily : 'Arial', fontSize: 24, fill : 0xff0000, align : 'center'});
+  player.resetText.x = appWidth/2 - 100;
+  player.resetText.y = appHeight/2 -60;
+  player.resetText.alpha = 0;
   player.vel = 0;
   player.calcVel = 0;
 
   stage.addChild(player.spr);
+  stage.addChild(player.resetText);
 }
 
 
@@ -29,8 +35,12 @@ function updatePlayer(deltaT) {
   if (keys.a) {
     player.spr.rotation -= 2*deltaT;
   }
-
-
+  if(player.resetText.alpha > 0) {
+    player.resetText.alpha -= .02;
+  } else {
+    player.resetText.alpha = 0;
+  }
+  log(player.resetText.alpha);
   if (player.calcVel < 5 || !keys.w) {
     if (keys.w) {
 

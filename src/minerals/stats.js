@@ -50,6 +50,8 @@ function updateCounter() {
     text = "";
   }
 
+  counter.text.text = text + player.minerals;
+
   if (highscore < player.minerals ) {
     counter.highscore.text = text + player.minerals;
     highscore = player.minerals;
@@ -58,5 +60,15 @@ function updateCounter() {
     counter.highscore.text = text + highscore;
   }
 
-  counter.text.text = text + player.minerals;
+  if (player.kills < 10) {
+    text = "00";
+  }
+  else if (player.kills < 100) {
+    text = "0";
+  }
+  else {
+    text = "";
+  }
+
+  counter.enemyCounter.text = text + player.kills;
 }

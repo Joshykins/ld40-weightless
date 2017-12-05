@@ -1,4 +1,4 @@
-const asteroidCount = 6;
+const asteroidCount = 16;
 const appHeight = 760;
 const appWidth = 1280;
 let checkForExplosion = false;

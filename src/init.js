@@ -34,3 +34,10 @@ function setup() {
   createCounter();
   animationLoop();
 }
+
+function resetGame() {
+ player.minerals = 0;
+ player.kills = 0;
+ enemyCount = 0;
+ player.resetText.alpha = 1;
+}
